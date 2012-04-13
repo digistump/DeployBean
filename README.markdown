@@ -12,8 +12,20 @@ Beanstalk Deployments from your windows system tray.
 - Right-click on the tray icon and go to settings
 - You're good to go!
 
-*.NET Framwork 4 is required*
+*.NET Framework 4 is required - the install will download it if you don't have it*
 
+
+Features
+----------------------
+
+- Click the Tray icon to bring up the deployment menu.
+- Navigate the menu with arrow keys + enter or the mouse.
+- Set a hotkey form the settings menu to launch the deploy menu.
+- It will remember the last repository you selected, and the last enviroment for each repository.
+- The latest commit will always be selected.
+- Only non-current enviroments show (if you select a past commit it will show current ones for roll-back).
+- Tray notification on deployment scucess or failure.
+- Add a second account to access two accounts from the same menu.
 
 Hacking on DeployBean
 ----------------------
@@ -28,6 +40,8 @@ Troubleshooting
 ----------------------
 
 If the program crashes it's likely due to no internet connection, being behind a proxy (no proxy support yet), or bad login information.
+
+Make sure you have the API enabled in you Beanstalk account - this could also cause it to crash.
 
 This is by no means a polished program - very little error control is present - but given the nature of the Beanstalk API this means crashes are possible, not mistaken deployments.
 

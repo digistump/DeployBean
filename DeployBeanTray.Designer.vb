@@ -133,9 +133,9 @@ Partial Class DeployBean
         Me.EnviroLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.EnviroLabel.Location = New System.Drawing.Point(7, 9)
         Me.EnviroLabel.Name = "EnviroLabel"
-        Me.EnviroLabel.Size = New System.Drawing.Size(176, 31)
+        Me.EnviroLabel.Size = New System.Drawing.Size(192, 31)
         Me.EnviroLabel.TabIndex = 7
-        Me.EnviroLabel.Text = "Enviroments"
+        Me.EnviroLabel.Text = "Environments"
         Me.EnviroLabel.Visible = False
         '
         'DeployCancelButton
@@ -221,7 +221,6 @@ Partial Class DeployBean
         Me.ClientSize = New System.Drawing.Size(522, 444)
         Me.ControlBox = False
         Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.DeployLabel)
         Me.Controls.Add(Me.DeployButton)
         Me.Controls.Add(Me.DeployCancelButton)
         Me.Controls.Add(Me.EnviroLabel)
@@ -232,6 +231,7 @@ Partial Class DeployBean
         Me.Controls.Add(Me.RepoList)
         Me.Controls.Add(Me.CommitList)
         Me.Controls.Add(Me.EnviroList)
+        Me.Controls.Add(Me.DeployLabel)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False

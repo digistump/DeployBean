@@ -270,6 +270,7 @@ Public Class DeployBean
             Else
                 repoSort.Clear()
                 repoItems.Clear()
+                repoAccount.Clear()
 
                 For Each item As Object In repoCache
                     Dim repo = item("repository")
@@ -493,7 +494,7 @@ Public Class DeployBean
             Next
 
             If EnviroList.Items.Count = 0 Then
-                EnviroList.Items.Add("All envrioments are current.")
+                EnviroList.Items.Add("All environments are current.")
                 EnviroList.Enabled = False
                 DeployCancelButton.Show()
                 DeployCancelButton.Focus()
@@ -545,7 +546,7 @@ Public Class DeployBean
             DeployText.AppendText("Please verify the following deployment:")
             DeployText.AppendText(Environment.NewLine)
             DeployText.AppendText(Environment.NewLine)
-            DeployText.AppendText("Enviroment: ")
+            DeployText.AppendText("Environment: ")
             DeployText.AppendText(EnviroList.Items(EnviroList.SelectedIndex))
             DeployText.AppendText(Environment.NewLine)
             DeployText.AppendText(Environment.NewLine)
