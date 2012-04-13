@@ -6,7 +6,7 @@ Beanstalk Deployments from your windows system tray.
 
 ### Quick Install - Precompiled Binaries 
 
-- Download the binaries () or installer ()
+- Download the [binaries](https://github.com/downloads/digistump/DeployBean/DeployBean.zip) or [installer](https://github.com/downloads/digistump/DeployBean/DeployBeanInstall.zip) from the Downloads page
 - Install / Unzip where you want it
 - Start from your Start Menu or DeployBean.exe
 - Right-click on the tray icon and go to settings
