@@ -113,6 +113,42 @@ Namespace My
                 Me("HotKeyMod") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Account2() As String
+            Get
+                Return CType(Me("Account2"),String)
+            End Get
+            Set
+                Me("Account2") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Username2() As String
+            Get
+                Return CType(Me("Username2"),String)
+            End Get
+            Set
+                Me("Username2") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property Password2() As String
+            Get
+                Return CType(Me("Password2"),String)
+            End Get
+            Set
+                Me("Password2") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

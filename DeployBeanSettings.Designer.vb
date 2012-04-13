@@ -50,6 +50,18 @@ Partial Class DeployBeanSettings
         Me.HotkeyCombo = New System.Windows.Forms.ComboBox()
         Me.ClearBtn = New System.Windows.Forms.Button()
         Me.HotkeyTip = New System.Windows.Forms.ToolTip(Me.components)
+        Me.AddSecond = New System.Windows.Forms.Button()
+        Me.ConfirmPass2Label = New System.Windows.Forms.Label()
+        Me.ConfirmPassword2 = New System.Windows.Forms.TextBox()
+        Me.Pass2Label = New System.Windows.Forms.Label()
+        Me.Username2Label = New System.Windows.Forms.Label()
+        Me.Account2Label = New System.Windows.Forms.Label()
+        Me.Password2 = New System.Windows.Forms.TextBox()
+        Me.Username2 = New System.Windows.Forms.TextBox()
+        Me.Account2 = New System.Windows.Forms.TextBox()
+        Me.SecondLabel = New System.Windows.Forms.Label()
+        Me.ClearSecond = New System.Windows.Forms.Button()
+        Me.AccountTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -61,7 +73,7 @@ Partial Class DeployBeanSettings
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(251, 264)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(691, 264)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -317,13 +329,141 @@ Partial Class DeployBeanSettings
         '
         Me.HotkeyTip.ToolTipTitle = "Hotkeys"
         '
+        'AddSecond
+        '
+        Me.AddSecond.Location = New System.Drawing.Point(393, 9)
+        Me.AddSecond.Name = "AddSecond"
+        Me.AddSecond.Size = New System.Drawing.Size(27, 23)
+        Me.AddSecond.TabIndex = 20
+        Me.AddSecond.Text = "+"
+        Me.AddSecond.UseVisualStyleBackColor = True
+        '
+        'ConfirmPass2Label
+        '
+        Me.ConfirmPass2Label.AutoSize = True
+        Me.ConfirmPass2Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ConfirmPass2Label.Location = New System.Drawing.Point(427, 147)
+        Me.ConfirmPass2Label.Name = "ConfirmPass2Label"
+        Me.ConfirmPass2Label.Size = New System.Drawing.Size(141, 20)
+        Me.ConfirmPass2Label.TabIndex = 28
+        Me.ConfirmPass2Label.Text = "Confirm Password:"
+        Me.ConfirmPass2Label.Visible = False
+        '
+        'ConfirmPassword2
+        '
+        Me.ConfirmPassword2.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ConfirmPassword2.Location = New System.Drawing.Point(574, 144)
+        Me.ConfirmPassword2.Name = "ConfirmPassword2"
+        Me.ConfirmPassword2.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
+        Me.ConfirmPassword2.Size = New System.Drawing.Size(271, 26)
+        Me.ConfirmPassword2.TabIndex = 25
+        Me.ConfirmPassword2.Visible = False
+        '
+        'Pass2Label
+        '
+        Me.Pass2Label.AutoSize = True
+        Me.Pass2Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Pass2Label.Location = New System.Drawing.Point(486, 115)
+        Me.Pass2Label.Name = "Pass2Label"
+        Me.Pass2Label.Size = New System.Drawing.Size(82, 20)
+        Me.Pass2Label.TabIndex = 27
+        Me.Pass2Label.Text = "Password:"
+        Me.Pass2Label.Visible = False
+        '
+        'Username2Label
+        '
+        Me.Username2Label.AutoSize = True
+        Me.Username2Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Username2Label.Location = New System.Drawing.Point(481, 83)
+        Me.Username2Label.Name = "Username2Label"
+        Me.Username2Label.Size = New System.Drawing.Size(87, 20)
+        Me.Username2Label.TabIndex = 26
+        Me.Username2Label.Text = "Username:"
+        Me.Username2Label.Visible = False
+        '
+        'Account2Label
+        '
+        Me.Account2Label.AutoSize = True
+        Me.Account2Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Account2Label.Location = New System.Drawing.Point(450, 51)
+        Me.Account2Label.Name = "Account2Label"
+        Me.Account2Label.Size = New System.Drawing.Size(118, 20)
+        Me.Account2Label.TabIndex = 24
+        Me.Account2Label.Text = "Account Name:"
+        Me.Account2Label.Visible = False
+        '
+        'Password2
+        '
+        Me.Password2.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Password2.Location = New System.Drawing.Point(574, 112)
+        Me.Password2.Name = "Password2"
+        Me.Password2.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
+        Me.Password2.Size = New System.Drawing.Size(271, 26)
+        Me.Password2.TabIndex = 23
+        Me.Password2.Visible = False
+        '
+        'Username2
+        '
+        Me.Username2.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Username2.Location = New System.Drawing.Point(574, 80)
+        Me.Username2.Name = "Username2"
+        Me.Username2.Size = New System.Drawing.Size(271, 26)
+        Me.Username2.TabIndex = 22
+        Me.Username2.Visible = False
+        '
+        'Account2
+        '
+        Me.Account2.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Account2.Location = New System.Drawing.Point(574, 48)
+        Me.Account2.Name = "Account2"
+        Me.Account2.Size = New System.Drawing.Size(271, 26)
+        Me.Account2.TabIndex = 21
+        Me.Account2.Visible = False
+        '
+        'SecondLabel
+        '
+        Me.SecondLabel.AutoSize = True
+        Me.SecondLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SecondLabel.Location = New System.Drawing.Point(450, 12)
+        Me.SecondLabel.Name = "SecondLabel"
+        Me.SecondLabel.Size = New System.Drawing.Size(146, 20)
+        Me.SecondLabel.TabIndex = 29
+        Me.SecondLabel.Text = "Second Account:"
+        Me.SecondLabel.Visible = False
+        '
+        'ClearSecond
+        '
+        Me.ClearSecond.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ClearSecond.Location = New System.Drawing.Point(628, 175)
+        Me.ClearSecond.Name = "ClearSecond"
+        Me.ClearSecond.Size = New System.Drawing.Size(156, 29)
+        Me.ClearSecond.TabIndex = 30
+        Me.ClearSecond.Text = "Clear Account"
+        Me.ClearSecond.UseVisualStyleBackColor = True
+        Me.ClearSecond.Visible = False
+        '
+        'AccountTip
+        '
+        Me.AccountTip.ToolTipTitle = "Add Second Account"
+        '
         'DeployBeanSettings
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(435, 377)
+        Me.ClientSize = New System.Drawing.Size(875, 377)
+        Me.Controls.Add(Me.ClearSecond)
+        Me.Controls.Add(Me.SecondLabel)
+        Me.Controls.Add(Me.ConfirmPass2Label)
+        Me.Controls.Add(Me.ConfirmPassword2)
+        Me.Controls.Add(Me.Pass2Label)
+        Me.Controls.Add(Me.Username2Label)
+        Me.Controls.Add(Me.Account2Label)
+        Me.Controls.Add(Me.Password2)
+        Me.Controls.Add(Me.Username2)
+        Me.Controls.Add(Me.Account2)
+        Me.Controls.Add(Me.AddSecond)
         Me.Controls.Add(Me.ClearBtn)
         Me.Controls.Add(Me.HotkeyCombo)
         Me.Controls.Add(Me.Hotkey)
@@ -386,5 +526,17 @@ Partial Class DeployBeanSettings
     Friend WithEvents HotkeyCombo As System.Windows.Forms.ComboBox
     Friend WithEvents ClearBtn As System.Windows.Forms.Button
     Friend WithEvents HotkeyTip As System.Windows.Forms.ToolTip
+    Friend WithEvents AddSecond As System.Windows.Forms.Button
+    Friend WithEvents ConfirmPass2Label As System.Windows.Forms.Label
+    Friend WithEvents ConfirmPassword2 As System.Windows.Forms.TextBox
+    Friend WithEvents Pass2Label As System.Windows.Forms.Label
+    Friend WithEvents Username2Label As System.Windows.Forms.Label
+    Friend WithEvents Account2Label As System.Windows.Forms.Label
+    Friend WithEvents Password2 As System.Windows.Forms.TextBox
+    Friend WithEvents Username2 As System.Windows.Forms.TextBox
+    Friend WithEvents Account2 As System.Windows.Forms.TextBox
+    Friend WithEvents SecondLabel As System.Windows.Forms.Label
+    Friend WithEvents ClearSecond As System.Windows.Forms.Button
+    Friend WithEvents AccountTip As System.Windows.Forms.ToolTip
 
 End Class

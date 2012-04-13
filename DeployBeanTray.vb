@@ -15,31 +15,43 @@ Public Class DeployBean
 
 
 
-    Dim repoItems As New Dictionary(Of Integer, String)
+    Dim repoItems As New Dictionary(Of String, String)
     Dim repoSort As New Dictionary(Of String, String)
-    Dim repoCache As Object
-    Dim commitCache As Object
+    Dim repoCache As Object = Nothing
+    Dim repoCache2 As Object = Nothing
+    Dim repoAccount As New Dictionary(Of String, Boolean)
+    Dim commitCache As Object = Nothing
     Dim commitItems As New Dictionary(Of String, String)
-    Dim enviroCache As Object
+    Dim enviroCache As Object = Nothing
     Dim enviroItems As New Dictionary(Of String, String)
     Dim repoId As String
     Dim revId As String
     Dim enviroId As String
     Dim toastMsg As String
     Dim lastEnviro As New Dictionary(Of String, String)
+    Dim accountFlag As Boolean = False
 
 
 
-    Private Function FetchBeanstalkData(ByVal getString As String, ByVal rev As String) As Object
+
+    Private Function FetchBeanstalkData(ByVal getString As String, ByVal rev As String, ByVal second As Boolean) As Object
         Dim request As WebRequest
         Dim myCreds As New CredentialCache()
         Dim Creds As New NetworkCredential()
         'Set account creds
-        Creds = New NetworkCredential(My.Settings.Username, My.Settings.Password)
-        myCreds.Add(New Uri("http://" + My.Settings.Account + ".beanstalkapp.com"), "Basic", Creds)
-        ' Create a request using a URL that can receive a post. 
-        request = WebRequest.Create("http://" + My.Settings.Account + ".beanstalkapp.com" + getString)
-        Console.WriteLine("http://" + My.Settings.Account + ".beanstalkapp.com" + getString)
+        If second = True Then
+            Creds = New NetworkCredential(My.Settings.Username2, My.Settings.Password2)
+            myCreds.Add(New Uri("http://" + My.Settings.Account2 + ".beanstalkapp.com"), "Basic", Creds)
+            ' Create a request using a URL that can receive a post. 
+            request = WebRequest.Create("http://" + My.Settings.Account2 + ".beanstalkapp.com" + getString)
+        Else
+            Creds = New NetworkCredential(My.Settings.Username, My.Settings.Password)
+            myCreds.Add(New Uri("http://" + My.Settings.Account + ".beanstalkapp.com"), "Basic", Creds)
+            ' Create a request using a URL that can receive a post. 
+            request = WebRequest.Create("http://" + My.Settings.Account + ".beanstalkapp.com" + getString)
+        End If
+
+        'Console.WriteLine("http://" + My.Settings.Account + ".beanstalkapp.com" + getString)
         request.Credentials = myCreds
         ' Set the Method property of the request to POST.
         Dim dataStream As Stream
@@ -74,7 +86,7 @@ Public Class DeployBean
         ' Read the content.
         Dim responseFromServer As String = reader.ReadToEnd()
         ' Display the content.
-        Console.WriteLine(responseFromServer)
+        'Console.WriteLine(responseFromServer)
         Dim serializer As JavaScriptSerializer
         serializer = New JavaScriptSerializer()
         Dim jsonResponse = Nothing
@@ -240,7 +252,11 @@ Public Class DeployBean
 
     Private Sub GetRepos()
         'get repos when shown - add only if changed from inital app load
-        repoCache = FetchBeanstalkData("/api/repositories.json", Nothing)
+        repoCache = FetchBeanstalkData("/api/repositories.json", Nothing, False)
+        If My.Settings.Password2 <> "" Then
+            repoCache2 = FetchBeanstalkData("/api/repositories.json", Nothing, True)
+        End If
+
         Dim t As New Threading.Thread(AddressOf SetRepos)
         t.Start()
         
@@ -262,7 +278,21 @@ Public Class DeployBean
                     Dim update As String = repo("updated_at")
                     repoSort.Add(update, title)
                     repoItems.Add(id, title)
+                    repoAccount.Add(id, False)
                 Next
+
+                If repoCache2 Is Nothing Then
+                Else
+                    For Each item As Object In repoCache2
+                        Dim repo = item("repository")
+                        Dim title As String = repo("title")
+                        Dim id As Integer = repo("id")
+                        Dim update As String = repo("updated_at")
+                        repoSort.Add(update, title)
+                        repoItems.Add(id, title)
+                        repoAccount.Add(id, True)
+                    Next
+                End If
 
                 Dim keys As List(Of String) = repoSort.Keys.ToList
                 keys.Sort()
@@ -321,7 +351,7 @@ Public Class DeployBean
                     End If
 
                 Next
-            End If
+                End If
         End If
     End Sub
 
@@ -332,6 +362,7 @@ Public Class DeployBean
                 Dim title As String = item.Value
                 If selected.IndexOf(title + " (") = 0 And selected.Length - title.Length >= 12 And selected.Length - title.Length <= 15 Then
                     repoId = item.Key
+                    accountFlag = repoAccount(repoId)
                     'Hide list and send repo id to next step
                     RepoList.Hide()
                     RepoLabel.Hide()
@@ -360,7 +391,7 @@ Public Class DeployBean
 
     Private Sub GetCommits()
         If repoId <> Nothing Then
-            commitCache = FetchBeanstalkData("/api/changesets/repository.json?repository_id=" + repoId, Nothing)
+            commitCache = FetchBeanstalkData("/api/changesets/repository.json?repository_id=" + repoId, Nothing, accountFlag)
             Dim t As New Threading.Thread(AddressOf SetCommits)
             t.Start()
         End If
@@ -413,7 +444,7 @@ Public Class DeployBean
 
     Private Sub GetEnviros()
         If repoId <> Nothing Then
-            enviroCache = FetchBeanstalkData("/api/" + repoId + "/server_environments.json", Nothing)
+            enviroCache = FetchBeanstalkData("/api/" + repoId + "/server_environments.json", Nothing, accountFlag)
             'Dim t As New Threading.Thread(AddressOf SetEnviros)
             't.Start()
         End If
@@ -574,11 +605,11 @@ Public Class DeployBean
 
 
     Public Sub Deploy()
-
+        Dim thisAccountFlag = accountFlag
         Dim rev As String = revId
         Dim rep As String = repoId
         Dim env As String = enviroId
-        Dim release As Object = FetchBeanstalkData("/api/" + rep + "/releases.json?environment_id=" + env, rev)
+        Dim release As Object = FetchBeanstalkData("/api/" + rep + "/releases.json?environment_id=" + env, rev, thisAccountFlag)
         Dim releaseObj = release("release")
         Dim relError As String = Nothing
 
@@ -612,7 +643,7 @@ Public Class DeployBean
 LineCheckRelease:
 
         Thread.Sleep(10000)
-        releaseData = FetchBeanstalkData("/api/" + rep + "/releases/" + rel + ".json", Nothing)
+        releaseData = FetchBeanstalkData("/api/" + rep + "/releases/" + rel + ".json", Nothing, thisAccountFlag)
         If releaseData Is Nothing Then
         Else
             If releaseData("release")("state") = "waiting" Or releaseData("release")("state") = "pending" Then
