@@ -10,9 +10,9 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("DeployBean")> 
 <Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("Microsoft")> 
+<Assembly: AssemblyCompany("Digistump")> 
 <Assembly: AssemblyProduct("")> 
-<Assembly: AssemblyCopyright("Copyright © Microsoft 2012")> 
+<Assembly: AssemblyCopyright("Copyleft Release under GNU GPL")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)> 
