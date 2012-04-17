@@ -40,6 +40,8 @@ Partial Class DeployBean
         Me.DeployLabel = New System.Windows.Forms.Label()
         Me.DeployBeanLabel = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.DeployVerifyLabel = New System.Windows.Forms.Label()
+        Me.EnviroLink = New System.Windows.Forms.LinkLabel()
         Me.TrayMenu.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -166,11 +168,11 @@ Partial Class DeployBean
         Me.DeployText.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.DeployText.Cursor = System.Windows.Forms.Cursors.Default
         Me.DeployText.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DeployText.Location = New System.Drawing.Point(13, 56)
+        Me.DeployText.Location = New System.Drawing.Point(13, 93)
         Me.DeployText.Multiline = True
         Me.DeployText.Name = "DeployText"
         Me.DeployText.ReadOnly = True
-        Me.DeployText.Size = New System.Drawing.Size(501, 291)
+        Me.DeployText.Size = New System.Drawing.Size(501, 217)
         Me.DeployText.TabIndex = 10
         Me.DeployText.Visible = False
         '
@@ -213,6 +215,29 @@ Partial Class DeployBean
         Me.Label1.Text = "Deploy  Bean"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'DeployVerifyLabel
+        '
+        Me.DeployVerifyLabel.AutoSize = True
+        Me.DeployVerifyLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DeployVerifyLabel.Location = New System.Drawing.Point(12, 56)
+        Me.DeployVerifyLabel.Name = "DeployVerifyLabel"
+        Me.DeployVerifyLabel.Size = New System.Drawing.Size(373, 24)
+        Me.DeployVerifyLabel.TabIndex = 14
+        Me.DeployVerifyLabel.Text = "Please verify the following deployment:"
+        Me.DeployVerifyLabel.Visible = False
+        '
+        'EnviroLink
+        '
+        Me.EnviroLink.AutoSize = True
+        Me.EnviroLink.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EnviroLink.Location = New System.Drawing.Point(13, 313)
+        Me.EnviroLink.Name = "EnviroLink"
+        Me.EnviroLink.Size = New System.Drawing.Size(106, 16)
+        Me.EnviroLink.TabIndex = 15
+        Me.EnviroLink.TabStop = True
+        Me.EnviroLink.Text = "EnvironmentLink"
+        Me.EnviroLink.Visible = False
+        '
         'DeployBean
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -220,7 +245,9 @@ Partial Class DeployBean
         Me.BackColor = System.Drawing.Color.Silver
         Me.ClientSize = New System.Drawing.Size(522, 444)
         Me.ControlBox = False
+        Me.Controls.Add(Me.DeployVerifyLabel)
         Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.EnviroLink)
         Me.Controls.Add(Me.DeployButton)
         Me.Controls.Add(Me.DeployCancelButton)
         Me.Controls.Add(Me.EnviroLabel)
@@ -263,5 +290,7 @@ Partial Class DeployBean
     Friend WithEvents DeployLabel As System.Windows.Forms.Label
     Friend WithEvents DeployBeanLabel As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents DeployVerifyLabel As System.Windows.Forms.Label
+    Friend WithEvents EnviroLink As System.Windows.Forms.LinkLabel
 
 End Class

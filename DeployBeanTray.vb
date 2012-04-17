@@ -16,6 +16,7 @@ Public Class DeployBean
 
 
     Dim repoItems As New Dictionary(Of String, String)
+    Dim repoNames As New Dictionary(Of String, String)
     Dim repoSort As New Dictionary(Of String, String)
     Dim repoCache As Object = Nothing
     Dim repoCache2 As Object = Nothing
@@ -24,6 +25,7 @@ Public Class DeployBean
     Dim commitItems As New Dictionary(Of String, String)
     Dim enviroCache As Object = Nothing
     Dim enviroItems As New Dictionary(Of String, String)
+    Dim enviroVersion As New Dictionary(Of String, String)
     Dim repoId As String
     Dim revId As String
     Dim enviroId As String
@@ -94,7 +96,8 @@ Public Class DeployBean
             Dim jsonResponse = Nothing
             Try
                 jsonResponse = serializer.Deserialize(Of Object)(responseFromServer)
-            Catch ex As Exception
+            Catch
+                Return Nothing
             End Try
 
             ' Clean up the streams.
@@ -150,6 +153,7 @@ Public Class DeployBean
             DeployLabel.Hide()
             DeployCancelButton.Hide()
             DeployText.Hide()
+            DeployVerifyLabel.Hide()
 
             Me.WindowState = FormWindowState.Normal
             RepoList.Focus()
@@ -195,7 +199,22 @@ Public Class DeployBean
 
             Dim FirstHotKey As Integer = [Enum].Parse(GetType(Keys), My.Settings.HotKey)
             Dim htk As HotKey = New HotKey("DeployBean HotKey", FirstHotKey, Integer.Parse(My.Settings.HotKeyMod))
-            Me.HotKeys.Add(htk)
+
+            Try
+                Me.HotKeys.Add(htk)
+            Catch
+                My.Settings.HotKey = ""
+                My.Settings.HotKeyMod = 0
+                My.Settings.Save()
+                MessageBox.Show("DeployBean could not bind to the hotkey you selected. Please select another and try again.", _
+                "Hotkey Error", _
+                MessageBoxButtons.OK, _
+                MessageBoxIcon.Error, _
+                MessageBoxDefaultButton.Button1)
+            End Try
+
+
+
         End If
     End Sub
 
@@ -268,6 +287,16 @@ Public Class DeployBean
 
     Private Sub SetRepos()
         If repoCache Is Nothing Then
+
+            If RepoList.Items.Count < 1 Then
+                If RepoList.InvokeRequired Then
+                    RepoList.BeginInvoke(New MethodInvoker(AddressOf SetRepos))
+                Else
+                    RepoList.Items.Add("Unable to retrieve repositroy list. Please set or ")
+                    RepoList.Items.Add("check your account info by right clicking the ")
+                    RepoList.Items.Add("tray icon and selecting settings.")
+                End If
+            End If
         Else
             If RepoList.InvokeRequired Then
                 RepoList.BeginInvoke(New MethodInvoker(AddressOf SetRepos))
@@ -275,14 +304,17 @@ Public Class DeployBean
                 repoSort.Clear()
                 repoItems.Clear()
                 repoAccount.Clear()
+                repoNames.Clear()
 
                 For Each item As Object In repoCache
                     Dim repo = item("repository")
                     Dim title As String = repo("title")
+                    Dim name As String = repo("name")
                     Dim id As Integer = repo("id")
                     Dim update As String = repo("updated_at")
                     repoSort.Add(update, title)
                     repoItems.Add(id, title)
+                    repoNames.Add(id, name)
                     repoAccount.Add(id, False)
                 Next
 
@@ -301,6 +333,8 @@ Public Class DeployBean
 
                 Dim keys As List(Of String) = repoSort.Keys.ToList
                 keys.Sort()
+                keys.Reverse()
+
 
                 Dim selected As String = Nothing
 
@@ -356,7 +390,7 @@ Public Class DeployBean
                     End If
 
                 Next
-                End If
+            End If
         End If
     End Sub
 
@@ -368,6 +402,7 @@ Public Class DeployBean
                 If selected.IndexOf(title + " (") = 0 And selected.Length - title.Length >= 12 And selected.Length - title.Length <= 15 Then
                     repoId = item.Key
                     accountFlag = repoAccount(repoId)
+
                     'Hide list and send repo id to next step
                     RepoList.Hide()
                     RepoLabel.Hide()
@@ -404,11 +439,14 @@ Public Class DeployBean
     End Sub
 
     Private Sub SetCommits()
-        If commitCache Is Nothing Then
+        If CommitList.InvokeRequired Then
+            CommitList.BeginInvoke(New MethodInvoker(AddressOf SetCommits))
         Else
-            If CommitList.InvokeRequired Then
-                CommitList.BeginInvoke(New MethodInvoker(AddressOf SetCommits))
+            If commitCache Is Nothing Then
+                CommitList.Items.Clear()
+                CommitList.Items.Add("Error fetching commits. Please try again.")
             Else
+
                 CommitList.Items.Clear()
                 commitItems.Clear()
                 'load them into commit list
@@ -457,6 +495,9 @@ Public Class DeployBean
 
     Private Sub SetEnviros()
         If enviroCache Is Nothing Then
+            EnviroList.Enabled = True
+            EnviroList.Items.Clear()
+            EnviroList.Items.Add("Error fetching environments. Please try again.")
         Else
             ' If EnviroList.InvokeRequired Then
             'EnviroList.BeginInvoke(New MethodInvoker(AddressOf SetEnviros))
@@ -464,6 +505,7 @@ Public Class DeployBean
             EnviroList.Enabled = True
             EnviroList.Items.Clear()
             enviroItems.Clear()
+            enviroVersion.Clear()
 
             Dim selected As String = CommitList.Items(CommitList.SelectedIndex)
             For Each item As Object In commitItems
@@ -491,6 +533,7 @@ Public Class DeployBean
                 End If
 
                 If (current <> revId) Then
+                    enviroVersion.Add(id, current)
                     EnviroList.Items.Add(name)
                     enviroItems.Add(id, name)
                     If lastEnviro.ContainsKey(repoId) Then
@@ -553,10 +596,20 @@ Public Class DeployBean
 
     Private Sub EnviroList_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EnviroList.Click
         If EnviroList.SelectedIndex > -1 Then
+
+            Dim envselected As String = EnviroList.Items(EnviroList.SelectedIndex)
+            For Each item As Object In enviroItems
+                Dim title As String = item.Value
+                If title = envselected Then
+                    enviroId = item.Key
+                    Exit For
+                End If
+            Next
+
             DeployText.Text = ""
-            DeployText.AppendText("Please verify the following deployment:")
-            DeployText.AppendText(Environment.NewLine)
-            DeployText.AppendText(Environment.NewLine)
+            'DeployText.AppendText("Please verify the following deployment:")
+
+
             DeployText.AppendText("Environment: ")
             DeployText.AppendText(EnviroList.Items(EnviroList.SelectedIndex))
             DeployText.AppendText(Environment.NewLine)
@@ -567,17 +620,26 @@ Public Class DeployBean
             DeployText.AppendText(Environment.NewLine)
 
             DeployText.AppendText("Revision: ")
+            DeployText.AppendText(Environment.NewLine)
+            DeployText.AppendText("From: ")
+            DeployText.AppendText(enviroVersion.Item(enviroId))
+            DeployText.AppendText(Environment.NewLine)
+            DeployText.AppendText("To: ")
             DeployText.AppendText(revId)
 
+            DeployText.AppendText(Environment.NewLine)
+            DeployText.AppendText(Environment.NewLine)
+            DeployText.AppendText("Enviroment Page: ")
 
-            Dim envselected As String = EnviroList.Items(EnviroList.SelectedIndex)
-            For Each item As Object In enviroItems
-                Dim title As String = item.Value
-                If title = envselected Then
-                    enviroId = item.Key
-                    Exit For
-                End If
-            Next
+
+            Dim repoName As String = repoNames.Item(repoId)
+            If accountFlag = True Then
+                EnviroLink.Text = "https://" & My.Settings.Account2 & ".beanstalkapp.com/" & repoName & "/environments/" & enviroId
+            Else
+                EnviroLink.Text = "https://" & My.Settings.Account & ".beanstalkapp.com/" & repoName & "/environments/" & enviroId
+            End If
+
+
 
             If lastEnviro.ContainsKey(repoId) Then
                 lastEnviro(repoId) = enviroId
@@ -590,7 +652,9 @@ Public Class DeployBean
             DeployLabel.Show()
             DeployButton.Show()
             DeployCancelButton.Show()
+            DeployVerifyLabel.Show()
             DeployText.Show()
+            EnviroLink.Show()
 
             DeployButton.Focus()
         End If
@@ -700,6 +764,9 @@ LineCheckRelease:
     End Sub
 
 
+    Private Sub EnviroLink_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles EnviroLink.LinkClicked
+        System.Diagnostics.Process.Start(EnviroLink.Text)
+    End Sub
 End Class
 
 Public Delegate Sub HotKeyPressedEventHandler(ByVal sender As Object, ByVal e As HotKeyPressedEventArgs)
