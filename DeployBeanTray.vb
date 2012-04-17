@@ -470,6 +470,8 @@ Public Class DeployBean
                 End If
             Next
 
+            Dim EnviroIndex As Integer = 0
+
             'load them into commit list
             For Each item As Object In enviroCache
                 Dim env = item("server_environment")
@@ -487,7 +489,15 @@ Public Class DeployBean
                 If (current <> revId) Then
                     EnviroList.Items.Add(name)
                     enviroItems.Add(id, name)
+                    If lastEnviro.ContainsKey(repoId) Then
+                        If lastEnviro(repoId) = id Then
+                            EnviroList.SelectedIndex = EnviroIndex
+                        End If
+                    End If
+                    EnviroIndex = EnviroIndex + 1
                 End If
+
+
 
 
 
@@ -499,10 +509,7 @@ Public Class DeployBean
                 DeployCancelButton.Show()
                 DeployCancelButton.Focus()
             Else
-                If lastEnviro.ContainsKey(repoId) Then
-                    Dim lastEnviroName As String = lastEnviro(repoId)
-                    EnviroList.SelectedIndex = EnviroList.Items.IndexOf(lastEnviroName)
-                Else
+                If EnviroList.SelectedIndex < 1 Then
                     EnviroList.SelectedIndex = 0
                 End If
 
@@ -569,6 +576,7 @@ Public Class DeployBean
             Next
 
             If lastEnviro.ContainsKey(repoId) Then
+                lastEnviro(repoId) = enviroId
             Else
                 lastEnviro.Add(repoId, enviroId)
             End If

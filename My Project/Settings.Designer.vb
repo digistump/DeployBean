@@ -105,9 +105,9 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-        Public Property HotKeyMod() As String
+        Public Property HotKeyMod() As Integer
             Get
-                Return CType(Me("HotKeyMod"),String)
+                Return CType(Me("HotKeyMod"),Integer)
             End Get
             Set
                 Me("HotKeyMod") = value

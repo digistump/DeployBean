@@ -11,7 +11,14 @@ Public Class DeployBeanSettings
         My.Settings.Account2 = Account2.Text
         My.Settings.Username2 = Username2.Text
         My.Settings.Password2 = Password2.Text
+        Dim oldHotkey As String = My.Settings.HotKey
+        Dim oldHotkeyMod As Integer = My.Settings.HotKeyMod
+
+
+
         My.Settings.HotKey = Hotkey.Text.Trim.ToUpper
+
+
 
         If Integer.TryParse(Hotkey.Text, Nothing) Then
             My.Settings.HotKey = "D" & Hotkey.Text.Trim()
@@ -24,6 +31,18 @@ Public Class DeployBeanSettings
         End If
 
         My.Settings.Save()
+
+
+        If oldHotkey <> My.Settings.HotKey Or oldHotkeyMod <> My.Settings.HotKeyMod Then
+            MessageBox.Show("DeployBean will now restart to apply you HotKey settings.", _
+            "Restart Program", _
+            MessageBoxButtons.OK, _
+            MessageBoxIcon.Exclamation, _
+            MessageBoxDefaultButton.Button1)
+            Application.Restart()
+        End If
+
+
 
         If StartWithWindows.Checked Then
             Dim regKey As RegistryKey
