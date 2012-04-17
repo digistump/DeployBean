@@ -67,5 +67,7 @@ Download the repo and add - don't forget that pull request
 
 Or donate and let me know what you'd like to see
 
-If you are a part of one of those companies that use Beanstalk and find this useful and you want to throw me a free account so I can make more cool stuff like this, that'd be awesome. (Beanstalk, New Relic, etc)
+If you are a part of one of those companies that use Beanstalk and find this useful and you want to throw me a free account so I can make more cool stuff like this, that'd be awesome. 
 digistump (a_t) gmail (d_o_t) com
+
+###Special thanks to Beanstalk for providing a test account for development of this app
