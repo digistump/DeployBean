@@ -35,72 +35,76 @@ Public Class DeployBean
 
 
     Private Function FetchBeanstalkData(ByVal getString As String, ByVal rev As String, ByVal second As Boolean) As Object
-        Dim request As WebRequest
-        Dim myCreds As New CredentialCache()
-        Dim Creds As New NetworkCredential()
-        'Set account creds
-        If second = True Then
-            Creds = New NetworkCredential(My.Settings.Username2, My.Settings.Password2)
-            myCreds.Add(New Uri("http://" + My.Settings.Account2 + ".beanstalkapp.com"), "Basic", Creds)
-            ' Create a request using a URL that can receive a post. 
-            request = WebRequest.Create("http://" + My.Settings.Account2 + ".beanstalkapp.com" + getString)
-        Else
-            Creds = New NetworkCredential(My.Settings.Username, My.Settings.Password)
-            myCreds.Add(New Uri("http://" + My.Settings.Account + ".beanstalkapp.com"), "Basic", Creds)
-            ' Create a request using a URL that can receive a post. 
-            request = WebRequest.Create("http://" + My.Settings.Account + ".beanstalkapp.com" + getString)
-        End If
 
-        'Console.WriteLine("http://" + My.Settings.Account + ".beanstalkapp.com" + getString)
-        request.Credentials = myCreds
-        ' Set the Method property of the request to POST.
-        Dim dataStream As Stream
-        If rev Is Nothing Then
-            request.Method = "GET"
-        Else
-            request.Method = "POST"
-            ' Create POST data and convert it to a byte array.
-            Dim postData As String = "{""release"": {""revision"": """ + rev + """}}"
-            Dim byteArray As Byte() = Encoding.UTF8.GetBytes(postData)
-            ' Set the ContentType property of the WebRequest.
-            request.ContentType = "application/x-www-form-urlencoded"
-            ' Set the ContentLength property of the WebRequest.
-            request.ContentLength = byteArray.Length
-            ' Get the request stream.
-            dataStream = request.GetRequestStream()
-            ' Write the data to the request stream.
-            dataStream.Write(byteArray, 0, byteArray.Length)
-            ' Close the Stream object.
-            dataStream.Close()
-        End If
-
-        ' Get the response.
-        Dim response As WebResponse = request.GetResponse()
-        ' Display the status.
-        'DO SOMETHING HERE IF NOT OK
-        'Console.WriteLine(CType(response, HttpWebResponse).StatusDescription)
-        ' Get the stream containing content returned by the server.
-        dataStream = response.GetResponseStream()
-        ' Open the stream using a StreamReader for easy access.
-        Dim reader As New StreamReader(dataStream)
-        ' Read the content.
-        Dim responseFromServer As String = reader.ReadToEnd()
-        ' Display the content.
-        'Console.WriteLine(responseFromServer)
-        Dim serializer As JavaScriptSerializer
-        serializer = New JavaScriptSerializer()
-        Dim jsonResponse = Nothing
         Try
-            jsonResponse = serializer.Deserialize(Of Object)(responseFromServer)
-        Catch ex As Exception
+            Dim request As WebRequest
+            Dim myCreds As New CredentialCache()
+            Dim Creds As New NetworkCredential()
+            'Set account creds
+            If second = True Then
+                Creds = New NetworkCredential(My.Settings.Username2, My.Settings.Password2)
+                myCreds.Add(New Uri("http://" + My.Settings.Account2 + ".beanstalkapp.com"), "Basic", Creds)
+                ' Create a request using a URL that can receive a post. 
+                request = WebRequest.Create("http://" + My.Settings.Account2 + ".beanstalkapp.com" + getString)
+            Else
+                Creds = New NetworkCredential(My.Settings.Username, My.Settings.Password)
+                myCreds.Add(New Uri("http://" + My.Settings.Account + ".beanstalkapp.com"), "Basic", Creds)
+                ' Create a request using a URL that can receive a post. 
+                request = WebRequest.Create("http://" + My.Settings.Account + ".beanstalkapp.com" + getString)
+            End If
+
+            'Console.WriteLine("http://" + My.Settings.Account + ".beanstalkapp.com" + getString)
+            request.Credentials = myCreds
+            ' Set the Method property of the request to POST.
+            Dim dataStream As Stream
+            If rev Is Nothing Then
+                request.Method = "GET"
+            Else
+                request.Method = "POST"
+                ' Create POST data and convert it to a byte array.
+                Dim postData As String = "{""release"": {""revision"": """ + rev + """}}"
+                Dim byteArray As Byte() = Encoding.UTF8.GetBytes(postData)
+                ' Set the ContentType property of the WebRequest.
+                request.ContentType = "application/x-www-form-urlencoded"
+                ' Set the ContentLength property of the WebRequest.
+                request.ContentLength = byteArray.Length
+                ' Get the request stream.
+                dataStream = request.GetRequestStream()
+                ' Write the data to the request stream.
+                dataStream.Write(byteArray, 0, byteArray.Length)
+                ' Close the Stream object.
+                dataStream.Close()
+            End If
+
+            ' Get the response.
+            Dim response As WebResponse = request.GetResponse()
+            ' Display the status.
+            'DO SOMETHING HERE IF NOT OK
+            'Console.WriteLine(CType(response, HttpWebResponse).StatusDescription)
+            ' Get the stream containing content returned by the server.
+            dataStream = response.GetResponseStream()
+            ' Open the stream using a StreamReader for easy access.
+            Dim reader As New StreamReader(dataStream)
+            ' Read the content.
+            Dim responseFromServer As String = reader.ReadToEnd()
+            ' Display the content.
+            'Console.WriteLine(responseFromServer)
+            Dim serializer As JavaScriptSerializer
+            serializer = New JavaScriptSerializer()
+            Dim jsonResponse = Nothing
+            Try
+                jsonResponse = serializer.Deserialize(Of Object)(responseFromServer)
+            Catch ex As Exception
+            End Try
+
+            ' Clean up the streams.
+            reader.Close()
+            dataStream.Close()
+            response.Close()
+            Return jsonResponse
+        Catch
+            Return Nothing
         End Try
-
-        ' Clean up the streams.
-        reader.Close()
-        dataStream.Close()
-        response.Close()
-        Return jsonResponse
-
     End Function
 
 

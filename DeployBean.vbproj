@@ -29,7 +29,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ProductName>DeployBean</ProductName>
     <PublisherName>Digistump</PublisherName>
-    <ApplicationRevision>12</ApplicationRevision>
+    <ApplicationRevision>13</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
