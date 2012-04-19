@@ -327,6 +327,7 @@ Public Class DeployBean
                         Dim update As String = repo("updated_at")
                         repoSort.Add(update, title)
                         repoItems.Add(id, title)
+                        repoNames.Add(id, Name)
                         repoAccount.Add(id, True)
                     Next
                 End If
