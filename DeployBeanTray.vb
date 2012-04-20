@@ -149,6 +149,7 @@ Public Class DeployBean
             CommitLabel.Hide()
             EnviroList.Hide()
             EnviroLabel.Hide()
+            EnviroLink.Hide()
             DeployButton.Hide()
             DeployLabel.Hide()
             DeployCancelButton.Hide()
